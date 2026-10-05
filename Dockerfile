@@ -6,6 +6,9 @@ WORKDIR /app
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 
+# Make the maven wrapper executable (THIS IS THE FIX)
+RUN chmod +x mvnw
+
 # Download dependencies
 RUN ./mvnw dependency:go-offline
 
@@ -20,7 +23,7 @@ WORKDIR /app
 # Copy the built jar from the build stage
 COPY --from=build /app/target/*.jar app.jar
 
-# Expose port (Render sets the PORT env variable)
+# Expose port
 EXPOSE 8080
 
 # Run the application
